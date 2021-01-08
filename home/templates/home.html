@@ -1,8 +1,26 @@
-<h1 style="text-align:center">This site is for twitter sentiment analysis!!!</h1>
+<!doctype html>
 
-<p>
+<html lang = "en">
+    <head>
+        <title>Sentiment Analysis</title>
+        <style>
+        ul { background-color: #524b6b;
+            margin: 0;
+
+            }
+        </style>
+    </head>
+</html>
+
+<ul>
+    <h1 style="text-align:center">This site is for twitter sentiment analysis!!!</h1>
+</ul>
+
+
 {% for text in tweet%}
+<p>
 {{text}}
 <br/>
-{% endfor %}
 </p>
+{% endfor %}
+
