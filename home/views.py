@@ -1,9 +1,13 @@
 from django.shortcuts import render
-from . import dbMongo, streamer1
-import tweepy
-from pymongo import MongoClient
+#from . import dbMongo
+#from pymongo import MongoClient
+from . import streamer1
 import json
 import sys
+import pandas as pd
+from .apps import HomeConfig
+from rest_framework.views import APIView
+from django.http import JsonResponse
 
 consumer_key = "0KNplHp7ZAPcSP8hJBbFzMUeu"
 consumer_secret = "nJFATXys4wL4PcigCfzlc6C5nWTY7IljDFs7ZixKPepBmrJur2"
@@ -11,41 +15,49 @@ access_token_key = "99162393-jl6rOgbcTQ1mO3AJCtjafWC87Sr8rQeyhN2z2OpXM"
 access_token_secret = "qyxJzAKpEaukzL7xa3Lsnbc1SfhX5lrLMFf06zp9Ctk7T"
 
 
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token_key, access_token_secret)
+#auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+#auth.set_access_token(access_token_key, access_token_secret)
 
-api = tweepy.API(auth)
+#api = tweepy.API(auth)
 
-MONGO_HOST = 'mongodb+srv://twitter_web:sentiment@cluster0.njeft.mongodb.net/<twitter_test>?retryWrites=true&w=majority'
-
-
-class MyStreamListener(tweepy.StreamListener):
-    def on_status(self,status):
-        try:
-            client = MongoClient(MONGO_HOST)
-            db = client.twitter
-            # if status.retweeted:  ### to get the original tweets 
-            db.Newtocollate1.insert_one(status._json)
-            print (type(status._json))
+#MONGO_HOST = 'mongodb+srv://twitter_web:sentiment@cluster0.njeft.mongodb.net/<twitter_test>?retryWrites=true&w=majority'
+asd = []
 
 
-        except :
-            print("Error in Status retrieval")
-            return False # to end the stream 
+data = pd.read_csv('finalSentimentdata2.csv')
+for i in data['text']:
+    asd.append(i)
 
-    def on_error(self,data):
-        print('error 2')
 
 # Create your views here.
 
 def home(request):
-    tweetext = dbMongo.listForWeb
-    return render(request,'home.html',{'tweet':tweetext})
+    
+    return render(request,'home.html',{'tweet':asd})
 
 
 def second(request):
-    x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    y = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    chart1 = plotting(x,y)
+    chart1 = streamer1.plotting()
+    wordplot = streamer1.plot_wordcloud()
 
-    return render(request,'second.html',{'tweet':chart1})
+    return render(request,'second.html',{'tweet':chart1,'wordplot':wordplot})
+
+class call_model(APIView):
+    def get(self, request):
+        if request.method == 'GET':
+
+            text = asd[2900:]
+
+
+            vector = HomeConfig.vectorizer.transform(text)
+
+            test_tfidf = HomeConfig.tfidf_transform.transform(vector)
+
+            prediction = HomeConfig.model.predict(test_tfidf).tolist()
+            print(prediction)
+
+
+
+            response = {'text_sentiment': prediction}
+
+            return JsonResponse(response)

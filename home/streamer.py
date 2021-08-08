@@ -10,12 +10,14 @@ consumer_secret = "nJFATXys4wL4PcigCfzlc6C5nWTY7IljDFs7ZixKPepBmrJur2"
 access_token_key = "99162393-jl6rOgbcTQ1mO3AJCtjafWC87Sr8rQeyhN2z2OpXM"
 access_token_secret = "qyxJzAKpEaukzL7xa3Lsnbc1SfhX5lrLMFf06zp9Ctk7T"
 
+MONGO_HOST= 'mongodb+srv://twitter_web:sentiment@cluster0.njeft.mongodb.net/<twitter_test>?retryWrites=true&w=majority'
+
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token_key, access_token_secret)
 
 api = tweepy.API(auth)
 
-Todays_data = []
+
 
 
 class MyStreamListener(tweepy.StreamListener):
@@ -24,7 +26,7 @@ class MyStreamListener(tweepy.StreamListener):
             client = MongoClient(MONGO_HOST)
             db = client.twitter
             # if status.retweeted:  ### to get the original tweets 
-            db.Newtocoll.insert_one(status._json)
+            db.after_.insert_one(status._json)
             print (status.text)
 
 
