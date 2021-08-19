@@ -8,3 +8,4 @@ db.sqlite3-journal
 media
 twitter_credentials.py
 dbMongo.py
+home/streamer.py
