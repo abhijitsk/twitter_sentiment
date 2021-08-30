@@ -24,7 +24,7 @@ class HomeConfig(AppConfig):
     with open(path + 'modelsalla.p', 'rb') as pickled:
         token_LSTM = pickle.load(pickled)
 
-    model_LSTM = load_model(path + 'LSTM.h5)
+    model_LSTM = load_model(path + 'LSTM.h5')
     
 
 
