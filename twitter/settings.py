@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-MODELS = os.path.join(BASE_DIR, 'home\\models')
+MODELS = os.path.join(BASE_DIR, '\\home\\models')
 
 
 
