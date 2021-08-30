@@ -11,7 +11,7 @@ from keras.models import load_model
 class HomeConfig(AppConfig):
 
     name = 'dbMongo'
-    path = '/root/project_sentiment/twitter_sentiment/home/'
+    path = '/root/project_sentiment/twitter_sentiment/home/models'
     path3 = os.path.join(settings.MODELS, 'models1.p')
     path1 = os.path.join(settings.MODELS, 'modelsalla.p')
     path2 = os.path.join(settings.MODELS, 'LSTM.h5')
